@@ -4,4 +4,3 @@ Spigot Version: 1.8.8
 MySQL benötigt: true
  -> Db in der Config eintragen.
 Getestet in der 1.8.9
-
