@@ -38,6 +38,11 @@ public class TicketCommand implements CommandExecutor {
                         }
                         break;
                     case "übersicht":
+                        if (player.hasPermission("ticketx.übersicht")){
+                            holder.useruebsersichtGui(player);
+                        }else{
+                            Config.sendMessage(player," §cDu hast keine Rechte diesen Befehl auszuführen.");
+                        }
                         break;
                     case "mod":
                         if (player.hasPermission("ticketx.moderieren")){

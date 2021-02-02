@@ -26,30 +26,36 @@ public class ClickHandler implements Listener {
                 }else if (e.getSlot() == 52){
                     holder.archivGui(player);
                 }else if (e.getCurrentItem().getType().equals(Material.BOOK)) {
-                    holder.statusAendern(player, e);
+                    holder.erweiterteModerationsGui(player, e);
                 }
                 break;
-            case "Status Ändern":
+            case "Erweiterte Moderation":
                 e.setCancelled(true);
                 long id = Long.parseLong(e.getInventory().getItem(0).getItemMeta().getLore().get(e.getInventory()
                         .getItem(0).getItemMeta().getLore().size()-1).replace("§a➥ Ticket-Id: ",""));
-                if (e.getSlot() == 2){
-                    api.changeStatusAtId(id, TicketStatus.ANGENOMMEN);
+                if (e.getSlot() == 4){
+                    api.changeStatusAtId(id, TicketStatus.ERLEDIGT);
                     api.setModerator(id,player);
                     api.setOutDate(id);
                     holder.moderationsUebersichtGui(player);
-                    Config.sendMessage(player," §aDer Ticketstatus wurde auf Angenommen gesetzt.");
-                }else if (e.getSlot() == 4){
+                    Config.sendMessage(player," §aDer Ticketstatus wurde auf Erledigt gesetzt.");
+                }else if (e.getSlot() == 1){
                     api.setModerator(id,player);
                     Config.sendMessage(player," §aDu bist jetzt der Ticketmoderator.");
                     holder.moderationsUebersichtGui(player);
-                }else if (e.getSlot() == 6){
+                }else if (e.getSlot() == 2){
+                    api.changeStatusAtId(id,TicketStatus.ANGENOMMEN);
+                    api.setModerator(id,player);
+                    api.setOutDate(id);
+                    Config.sendMessage(player," §aDer Ticketstatus wurde auf Angenommen gesetzt.");
+                    holder.moderationsUebersichtGui(player);
+                }else if (e.getSlot() == 8){
+                    holder.moderationsUebersichtGui(player);
+                }else if (e.getSlot() == 3){
                     api.changeStatusAtId(id,TicketStatus.ABGELEHNT);
                     api.setModerator(id,player);
                     api.setOutDate(id);
                     Config.sendMessage(player," §aDer Ticketstatus wurde auf Abgelehnt gesetzt.");
-                    holder.moderationsUebersichtGui(player);
-                }else if (e.getSlot() == 8){
                     holder.moderationsUebersichtGui(player);
                 }
                 break;
@@ -58,8 +64,32 @@ public class ClickHandler implements Listener {
                 if (e.getSlot() == 53){
                     holder.moderationsUebersichtGui(player);
                 }else{
-
+                    try{
+                        id = Long.parseLong(e.getCurrentItem().getItemMeta().getLore().get(e.getCurrentItem().getItemMeta().getLore().size()-1).replace("§a➥ Ticket-Id: ",""));
+                        holder.reopenTicket(player,id);
+                    }catch (NullPointerException ignored){
+                    }
                 }
+            case "Neueröffnen":
+                e.setCancelled(true);
+                id = Long.parseLong(e.getInventory().getItem(0).getItemMeta().getLore().get(e.getInventory()
+                        .getItem(0).getItemMeta().getLore().size()-1).replace("§a➥ Ticket-Id: ",""));
+                if (e.getSlot() == 2){
+                    api.changeStatusAtId(id,TicketStatus.IN_BEARBEITUNG);
+                    holder.moderationsUebersichtGui(player);
+                    api.clearOutDate(id);
+                }else if (e.getSlot() == 4){
+                    holder.archivGui(player);
+                }else if (e.getSlot() == 6){
+                    holder.moderationsUebersichtGui(player);
+                }
+                break;
+            case "Ticket-Übersicht":
+                e.setCancelled(true);
+                if (e.getSlot() == 53){
+                    player.closeInventory();
+                }
+
         }
 
     }

@@ -62,4 +62,10 @@ public class TicketXMySQLAPI {
     public ArrayList<Object> getAllClosedTickets(){
         return con.get("SELECT ticket_id FROM ticketx_tickets WHERE status != 'IN_BEARBEITUNG' ORDER BY `ticketx_tickets`.`ticket_id` DESC","ticket_id");
     }
+    public void clearOutDate(long id){
+        con.execute("UPDATE ticketx_tickets SET outDate = ' ' WHERE ticket_id = "+id+"");
+    }
+    public ArrayList<Object> getAllTicketIdsByPlayerName(String playerName){
+        return con.get("SELECT ticket_id FROM ticketx_tickets WHERE playerName = '"+playerName+"'","ticket_id");
+    }
 }

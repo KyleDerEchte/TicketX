@@ -21,6 +21,8 @@ public class TicketItem {
             status = "§cAbgelehnt";
         }else if (api.getStatusByTicketId(ticket_id) == TicketStatus.ANGENOMMEN){
             status = "§aAngenommen";
+        }else if(api.getStatusByTicketId(ticket_id) == TicketStatus.ERLEDIGT){
+            status = "§6Erledigt";
         }else{
             status = "§2In Bearbeitung";
         }

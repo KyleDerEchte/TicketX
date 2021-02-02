@@ -28,17 +28,14 @@ public class InventoryHolder {
         player.openInventory(inventory);
     }
 
-    public void statusAendern(Player player, InventoryClickEvent e) {
+    public void erweiterteModerationsGui(Player player, InventoryClickEvent e) {
         long id = Long.parseLong(e.getCurrentItem().getItemMeta().getLore().get(e.getCurrentItem().getItemMeta().getLore().size() - 1).replace("§a➥ Ticket-Id: ", ""));
-        Inventory inventory = Bukkit.createInventory(null, 9, "Status Ändern");
+        Inventory inventory = Bukkit.createInventory(null, 9, "Erweiterte Moderation");
         inventory.setItem(0, ticketItem.createTicketItem(id));
-        inventory.setItem(1, builder.createGlassPane(Builder.Color.LIGHT_GRAY, " ", 1, " "));
-        inventory.setItem(2, builder.createGlassPane(Builder.Color.LIME_GREEN, "§aAnnehmen", 1, "§a➥ §2Klicke um das Ticket als angenommen zu markieren."));
-        inventory.setItem(3, builder.createGlassPane(Builder.Color.LIGHT_GRAY, " ", 1, " "));
-        inventory.setItem(4, builder.createGlassPane(Builder.Color.ORANGE, "§aModerieren", 1, "§a➥ §2Klicke um dich als Moderator einzutragen."));
-        inventory.setItem(5, builder.createGlassPane(Builder.Color.LIGHT_GRAY, " ", 1, " "));
-        inventory.setItem(6, builder.createGlassPane(Builder.Color.RED, "§aAblehnen", 1, "§a➥ §2Klicke um das Ticket als abgelehnt zu markieren."));
-        inventory.setItem(7, builder.createGlassPane(Builder.Color.LIGHT_GRAY, " ", 1, " "));
+        inventory.setItem(1, builder.createGlassPane(Builder.Color.ORANGE, "§aModerieren", 1, "§a➥ §2Klicke um dich als Moderator einzutragen."));
+        inventory.setItem(2, builder.createGlassPane(Builder.Color.LIME_GREEN, "§aAngenommen", 1, "§a➥ §2Klicke um den Status zu ändern"));
+        inventory.setItem(3,builder.createGlassPane(Builder.Color.RED,"§aAbgelehnt",1,"§a➥ §2Klicke um den Status zu ändern"));
+        inventory.setItem(4,builder.createGlassPane(Builder.Color.PINK,"§aErledigt",1,"§a➥ §2Klicke um den Status zu ändern"));
         inventory.setItem(8, builder.createItem(Material.BARRIER, "§aZurück"));
         player.openInventory(inventory);
     }
@@ -50,6 +47,27 @@ public class InventoryHolder {
             inventory.addItem(ticketItem.createTicketItem(id));
         }
         inventory.setItem(53,builder.createItem(Material.BARRIER,"§aZurück"));
+        player.openInventory(inventory);
+    }
+
+    public void reopenTicket(Player player,long id){
+        Inventory inventory = Bukkit.createInventory(null,9,"Neueröffnen");
+        inventory.setItem(0, ticketItem.createTicketItem(id));
+        inventory.setItem(2, builder.createGlassPane(Builder.Color.LIME_GREEN, "§aNeueröffnen", 1,
+                "§a➥ §2Klicke um das Ticket neu zu eröffnen."));
+        inventory.setItem(3, builder.createGlassPane(Builder.Color.LIGHT_GRAY, " ", 1, " "));
+        inventory.setItem(4, builder.createGlassPane(Builder.Color.RED, "§aAbbrechen", 1, " "));
+        inventory.setItem(6, builder.createItem(Material.BARRIER, "§aZurück zur HauptGui"));
+        player.openInventory(inventory);
+    }
+
+    public void useruebsersichtGui(Player player){
+        Inventory inventory = Bukkit.createInventory(null, 9*6,"Ticket-Übersicht");
+        for (Object o : api.getAllTicketIdsByPlayerName(player.getName())) {
+            long id = (long) o;
+            inventory.addItem(ticketItem.createTicketItem(id));
+        }
+        inventory.setItem(53,builder.createItem(Material.BARRIER,"§aSchließen"));
         player.openInventory(inventory);
     }
 }
