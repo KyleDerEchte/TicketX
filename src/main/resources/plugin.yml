@@ -1,0 +1,5 @@
+  name: TicketX
+  main: de.kyleonaut.ticketx.TicketX
+  version: 1
+  commands:
+    ticket:
