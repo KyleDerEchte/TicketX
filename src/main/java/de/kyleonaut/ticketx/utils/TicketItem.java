@@ -17,5 +17,6 @@ public class TicketItem {
         meta.setDisplayName(api.getTicketTitleById(ticket_id));
         ArrayList<String> lore = new ArrayList<>();
         return itemStack;
+        //
     }
 }
