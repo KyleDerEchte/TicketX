@@ -2,6 +2,7 @@ package de.kyleonaut.ticketx;
 
 import de.kyleonaut.ticketx.commands.TicketCommand;
 import de.kyleonaut.ticketx.events.ChatHandler;
+import de.kyleonaut.ticketx.events.ClickHandler;
 import de.kyleonaut.ticketx.utils.Config;
 import de.kyleonaut.ticketx.utils.MySQL;
 import org.bukkit.Bukkit;
@@ -31,6 +32,7 @@ public class TicketX extends JavaPlugin {
          * EventRegistery
          * */
         Bukkit.getPluginManager().registerEvents(new ChatHandler(),this);
+        Bukkit.getPluginManager().registerEvents(new ClickHandler(),this);
     }
 
     @Override

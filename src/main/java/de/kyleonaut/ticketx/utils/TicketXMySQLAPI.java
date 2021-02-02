@@ -1,41 +1,65 @@
 package de.kyleonaut.ticketx.utils;
 
+import org.bukkit.entity.Player;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class TicketXMySQLAPI {
 
-    private MySQL con = new MySQL();
+    private final MySQL con = new MySQL();
 
-    public String getPlayerNamebyTicketId(int id){
+    public String getPlayerNamebyTicketId(long id){
         return (String) con.get("SELECT playerName FROM ticketx_tickets WHERE ticket_id = "+id+"",
-                0).get(0);
+                "playerName").get(0);
     }
-    public TicketStatus getStatusByTicketId(int id){
+    public TicketStatus getStatusByTicketId(long id){
         String s = (String) con.get("SELECT status FROM ticketx_tickets WHERE ticket_id = "+id+"",
-                0).get(0);
+                "status").get(0);
         return TicketStatus.valueOf(s);
     }
-    public String getInDateByTicketId(int id){
+    public String getInDateByTicketId(long id){
         return (String) con.get("SELECT inDate FROM ticketx_tickets WHERE ticket_id = "+id+"",
-                0).get(0);
+                "inDate").get(0);
     }
-    public String getOutDateByTicketId(int id){
+    public String getOutDateByTicketId(long id){
         return (String) con.get("SELECT outDate FROM ticketx_tickets WHERE ticket_id = "+id+"",
-                0).get(0);
+                "outDate").get(0);
     }
-    public String getTicketTextByTicketId(int id){
+    public String getTicketTextByTicketId(long id){
         return (String) con.get("SELECT ticket_text FROM ticketx_tickets WHERE ticket_id = "+id+"",
-                0).get(0);
+                "ticket_text").get(0);
     }
-    public String getModeratorNameByTicketId(int id){
+    public String getModeratorNameByTicketId(long id){
         return (String) con.get("SELECT moderatorName FROM ticketx_tickets WHERE ticket_id = "+id+"",
-                0).get(0);
+                "moderatorName").get(0);
     }
-    public String getWeltNameByTicketId(int id){
+    public String getWeltNameByTicketId(long id){
         return (String) con.get("SELECT weltName FROM ticketx_tickets WHERE ticket_id = "+id+"",
-                0).get(0);
+                "weltName").get(0);
     }
-    public String getTicketTitleById(int id){
+    public String getTicketTitleById(long id){
         return (String) con.get("SELECT ticket_title FROM ticketx_tickets WHERE ticket_id = "+id+"",
-                0).get(0);
+                "ticket_title").get(0);
     }
-
+    public ArrayList<Object> getAllOpenTickets(){
+        return con.get("SELECT ticket_id FROM ticketx_tickets WHERE status = 'IN_BEARBEITUNG'","ticket_id");
+    }
+    public void changeStatusAtId(long id,TicketStatus status){
+        con.execute("UPDATE ticketx_tickets SET status = '"+status+"' WHERE ticket_id = "+id+"");
+    }
+    public void setModerator(long id, Player moderator){
+        con.execute("UPDATE ticketx_tickets SET moderatorName = '"+moderator.getName()+"', moderatorUUID = '"
+                +moderator.getUniqueId()+"' WHERE ticket_id = "+id+"");
+    }
+    public void setOutDate(long id){
+        LocalDateTime ldt = LocalDateTime.now();
+        String date = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.GERMANY).format(ldt);
+        con.execute("UPDATE ticketx_tickets SET outDate = '"+date+"' WHERE ticket_id = "+id+"");
+    }
+    public ArrayList<Object> getAllClosedTickets(){
+        return con.get("SELECT ticket_id FROM ticketx_tickets WHERE status != 'IN_BEARBEITUNG' ORDER BY `ticketx_tickets`.`ticket_id` DESC","ticket_id");
+    }
 }
