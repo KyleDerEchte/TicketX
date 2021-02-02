@@ -45,15 +45,22 @@ public class TicketCommand implements CommandExecutor {
                         }
                         break;
                     case "mod":
-                        if (player.hasPermission("ticketx.moderieren")){
+                        if (player.hasPermission("ticketx.mod")){
                             holder.moderationsUebersichtGui(player);
                         }else{
                             Config.sendMessage(player, " §cDu hast keine Rechte diesen Befehl auszuführen.");
                         }
                         break;
+
+
                 }
             } else {
-                Config.sendMessage(player, " §cHelp Command");
+                Config.sendMessage(player,"§a - - - §aTicket §2X §a- - -");
+                Config.sendMessage(player,"§a/ticket §2erstellen <Tickettitel>");
+                Config.sendMessage(player,"§a/ticket §2übersicht");
+                if (player.hasPermission("ticketx.moderieren")){
+                    Config.sendMessage(player,"§a/ticket §2mod");
+                }
             }
 
         }

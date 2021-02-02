@@ -3,3 +3,7 @@
   version: 1
   commands:
     ticket:
+permission:
+    ticketx.mod:
+    ticketx.erstellen:
+    ticketx.übersicht:
